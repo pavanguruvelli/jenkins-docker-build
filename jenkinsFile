@@ -1,10 +1,23 @@
 pipeline {
-    agent any
-
+    agent {
+        image maven:3.9.0-eclipse-temurin-17-alpine
+        args '-v $HOME/.m2:/root/.m2'
+    }
     stages {
-        stage('build') {
+        stage('docker-access-check') {
             steps {
-                echo "Hello world !!"
+                sh 'docker ps'
+            }
+        }
+        stage('maven-build') {
+            steps {
+                echo "mvn --version"
+                sh 'mvn clean install -DskipTests'
+            }
+        }
+        stage('docker-build') {
+            steps {
+                sh 'docker build -t java-app:1.0 .'
             }
         }
     }
