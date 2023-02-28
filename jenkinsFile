@@ -6,11 +6,6 @@ pipeline {
         }
     }
     stages {
-        stage('docker-access-check') {
-            steps {
-                sh 'docker ps'
-            }
-        }
         stage('maven-build') {
             steps {
                 echo "mvn --version"
